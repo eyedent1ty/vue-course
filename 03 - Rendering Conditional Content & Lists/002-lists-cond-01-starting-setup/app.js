@@ -12,6 +12,9 @@ const app = Vue.createApp({
     },
     clearEnteredGoalValue() {
       this.enteredGoalValue = '';
+    },
+    removeGoal() {
+
     }
   }
 });
