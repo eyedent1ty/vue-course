@@ -15,7 +15,8 @@ const app = Vue.createApp({
     },
     // Removing an item to the list of goals
     // The main point is that, whenever you want to manipulate state or the content of the page, always look for the model of the Vue app and not in the template
-    // The template will only serve as the template and the state and model are being handle by Vue app
+    // The template will only serve as the template and the model are being handle by Vue app
+    // Removing an element to the goals array will trigger re-render in Vue
     removeGoal(idx) {
       this.goals.splice(idx, 1);
     }

@@ -20,8 +20,18 @@
     <input type="text" v-model="enteredGoalValue" />
     <button @click="addGoal">Add Goal</button>
     <p v-if="goals.length === 0">No goals have been added yet - please start adding some!</p>
+
+    <!-- 
+      Maintaining State with key: list rendering in vue is efficient since it will patch each element in-place
+      and make sure it reflects what should be rendered at that particular index.
+      It is recommended to add key attribute to the element of v-for directive as much as possible.
+      for Vue to track each node's identity
+    -->
     <ul v-else="goals.length > 0">
-      <li v-for="(goal, index) in goals" @click="removeGoal(index)">{{ goal }} - {{ index }}</li>
+      <li v-for="(goal, index) in goals" @click="removeGoal(index)" :key="goal">
+        <p>{{ goal }} - {{ index }}</p>
+        <input type="text" @click.stop />
+      </li>
     </ul>
 
 
