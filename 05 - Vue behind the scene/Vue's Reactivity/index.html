@@ -18,7 +18,9 @@
     </header>
     <section id="app">
       <h2>How Vue Works</h2>
-      <input type="text" @input="saveInput">
+      <!-- ref attribute is an attribute used works only specifically in Vue not in plain HTML -->
+      <!-- the value of the ref attribute will be the key, while the element itself will be the value -->
+      <input type="text" ref="userText">
       <button @click="setText">Set Text</button>
       <p>{{ message }}</p>
     </section>
@@ -26,6 +28,11 @@
     <section id="app2">
       <!-- THIS WILL NOT WORK, Vue app is indepedent to one another <p>{{ message }}</p> -->
       <!-- <p>{{ favoriteFood }}</p> -->
+    </section>
+
+    <section id="app3">
+      <input type="text" @input="onInputMessage" />
+      <p>{{ message }}</p>
     </section>
   </body>
 </html>
