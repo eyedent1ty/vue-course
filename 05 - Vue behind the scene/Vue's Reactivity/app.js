@@ -15,6 +15,16 @@ const app = Vue.createApp({
   },
 });
 
+const app2 = Vue.createApp({
+  data() {
+    return {
+      favoriteFood: 'Pizza'
+    };
+  }
+});
+
+app2.mount('#app2');
+
 
 // How proxy works and how to create reactive system
 // app.mount('#app');

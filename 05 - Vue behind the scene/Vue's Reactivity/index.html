@@ -22,5 +22,10 @@
       <button @click="setText">Set Text</button>
       <p>{{ message }}</p>
     </section>
+
+    <section id="app2">
+      <!-- THIS WILL NOT WORK, Vue app is indepedent to one another <p>{{ message }}</p> -->
+      <p>{{ favoriteFood }}</p>
+    </section>
   </body>
 </html>
