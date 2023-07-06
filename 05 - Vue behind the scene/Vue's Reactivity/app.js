@@ -5,11 +5,35 @@ const app = Vue.createApp({
       message: 'Vue is great!',
     };
   },
+  beforeCreate() {
+    console.log('beforeCreate()');
+  },
+  created() {
+    console.log('created()');
+  },
+  beforeMount() {
+    console.log('beforeMount()');
+  },
+  mounted() {
+    console.log('mounted()');
+  },
+  beforeUpdate() {
+    console.log('beforeUpdate()');
+  },
+  updated() {
+    console.log('updated()');
+  },
+  beforeUnmount() {
+    console.log('beforeUnmount()');
+  },
+  unmounted() {
+    console.log('unmounted()');
+  },
   methods: {
     saveInput(event) {
       this.currentUserInput = event.target.value;
     },
-    setText() { 
+    setText() {
       // Referencing the HTML DOM representation of an element
       this.message = this.$refs.userText.value;
     },
@@ -17,6 +41,10 @@ const app = Vue.createApp({
 });
 
 app.mount('#app');
+
+setTimeout(() => {
+  app.unmount();
+}, 5000);
 
 const app2 = Vue.createApp({
   template: `
