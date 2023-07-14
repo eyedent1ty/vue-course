@@ -1,6 +1,6 @@
 <template>
   <li>
-    <h2>{{ name }} {{ isFriendFavorite === "1" ? "(Favorite)" : "" }}</h2>
+    <h2>{{ name }} {{ isFriendFavorite ? "(Favorite)" : "" }}</h2>
     <button @click="toggleFavorite">Toggle favorite</button>
     <button @click="toggleDetails">
       {{ isShowDetailsActive ? "Hide" : "Show" }} Details
@@ -19,18 +19,18 @@ export default {
       type: String,
       required: true,
     },
-    phoneNumber: String,
+    phoneNumber: {
+      type: String,
+      required: true
+    },
     emailAddress: {
       type: String,
       required: true,
     },
     isFavorite: {
-      type: String,
+      type: Boolean,
       required: false,
-      default: "0",
-      validator(value) {
-        return value === "1" || value === "0";
-      },
+      default: false
     },
   },
   data() {
@@ -58,11 +58,7 @@ export default {
     //   }
     // }
     toggleFavorite() {
-      if (this.isFriendFavorite === "0") {
-        this.isFriendFavorite = "1";
-      } else {
-        this.isFriendFavorite = "0";
-      }
+      this.isFriendFavorite = !this.isFriendFavorite;
     },
   },
   // The props are converted as properties of the component instance, same level with the data properties and methods

@@ -1,19 +1,14 @@
 <template>
   <h2>My friends</h2>
   <ul>
-    <friend-contact 
-      name="Manuel Lopez"
-      phone-number="0123 4567 90"
-      email-address="manuel@localhost.com"
-      is-favorite="1"
-    ></friend-contact>
     <friend-contact
-      name="Juliet Jones"
-      phone-number="0987 6543 90"
-      email-address="juliet@localhost.com"
-      is-favorite="0"
-    >
-    </friend-contact>
+      v-for="friend in friends"
+      :key="friend.id"
+      :name="friend.name"
+      :phone-number="friend.phone"
+      :email-address="friend.email"
+      :is-favorite="true"
+    ></friend-contact>
   </ul>
 </template>
 
