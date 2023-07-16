@@ -1,6 +1,6 @@
 <template>
   <li>
-    <h2>{{ name }} {{ isFriendFavorite ? "(Favorite)" : "" }}</h2>
+    <h2>{{ name }} {{ isFavorite ? "(Favorite)" : "" }}</h2>
     <button @click="toggleFavorite">Toggle favorite</button>
     <button @click="toggleDetails">
       {{ isShowDetailsActive ? "Hide" : "Show" }} Details
@@ -15,6 +15,10 @@
 <script>
 export default {
   props: {
+    id: {
+      type: String,
+      required: true
+    },
     name: {
       type: String,
       required: true,
@@ -35,14 +39,7 @@ export default {
   },
   data() {
     return {
-      friend: {
-        id: "manuel",
-        name: "Manuel Lopez",
-        phone: "0123 4567 90",
-        email: "manuel@localhost.com",
-      },
       isShowDetailsActive: false,
-      isFriendFavorite: this.isFavorite,
     };
   },
   methods: {
@@ -58,7 +55,7 @@ export default {
     //   }
     // }
     toggleFavorite() {
-      this.isFriendFavorite = !this.isFriendFavorite;
+      this.$emit('toggle-favorite', this.id);
     },
   },
   // The props are converted as properties of the component instance, same level with the data properties and methods
