@@ -1,6 +1,9 @@
 <template>
   <li>
-    <h2>{{ name }} {{ isFavorite ? "(Favorite)" : "" }}</h2>
+    <h2>
+      {{ name }} {{ isFavorite ? "(Favorite)" : "" }}
+      <button @click="removeFriendContact">Remove</button>
+    </h2>
     <button @click="toggleFavorite">Toggle favorite</button>
     <button @click="toggleDetails">
       {{ isShowDetailsActive ? "Hide" : "Show" }} Details
@@ -17,7 +20,7 @@ export default {
   props: {
     id: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
       type: String,
@@ -25,7 +28,7 @@ export default {
     },
     phoneNumber: {
       type: String,
-      required: true
+      required: true,
     },
     emailAddress: {
       type: String,
@@ -34,19 +37,30 @@ export default {
     isFavorite: {
       type: Boolean,
       required: false,
-      default: false
+      default: false,
     },
   },
   // This property can be used to document the custom events that this component has
   // emits: ['toggle-favorite'],
   emits: {
-    'toggle-favorite': (friendId) => {
+    "toggle-favorite": (friendId) => {
       if (friendId) {
         return true;
       }
-      console.warn('friend id is missing as the argument of the toggle-favorite event');
+      console.warn(
+        "friend id is missing as the argument of the toggle-favorite event"
+      );
       return false;
-    }
+    },
+    "remove-friend-contact": (friendId) => {
+      if (friendId) {
+        return true;
+      }
+      console.warn(
+        "friend id is missing as the argument of the remove-friend-contact event"
+      );
+      return false;
+    },
   },
   data() {
     return {
@@ -66,7 +80,10 @@ export default {
     //   }
     // }
     toggleFavorite() {
-      this.$emit('toggle-favorite', this.id);
+      this.$emit("toggle-favorite", this.id);
+    },
+    removeFriendContact() {
+      this.$emit("remove-friend-contact", this.id);
     },
   },
   // The props are converted as properties of the component instance, same level with the data properties and methods

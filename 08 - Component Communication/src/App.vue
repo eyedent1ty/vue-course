@@ -1,5 +1,6 @@
 <template>
   <h2>My friends</h2>
+  <new-friend @add-friend="addNewFriend"></new-friend>
   <ul>
     <friend-contact
       v-for="friend in friends"
@@ -10,6 +11,7 @@
       :email-address="friend.email"
       :is-favorite="friend.isFavorite"
       @toggle-favorite="toggleFavoriteStatus"
+      @remove-friend-contact="removeFriendFromContacts"
     ></friend-contact>
   </ul>
 </template>
@@ -24,24 +26,33 @@ export default {
           name: "Manuel Lopez",
           phone: "0123 45678 90",
           email: "manuel@localhost.com",
-          isFavorite: true
+          isFavorite: true,
         },
         {
           id: "julie",
-          name: "Julie Jones",
+          name: "Julie Jones",  
           phone: "0123 45678 90",
           email: "julie@localhost.com",
-          isFavorite: false
+          isFavorite: false,
         },
       ],
     };
   },
   methods: {
     toggleFavoriteStatus(friendId) {
-      const identifiedFriend = this.friends.find(friend => friend.id === friendId);
+      const identifiedFriend = this.friends.find(
+        (friend) => friend.id === friendId
+      );
       identifiedFriend.isFavorite = !identifiedFriend.isFavorite;
+    },
+    addNewFriend(newFriend) {
+      this.friends.push(newFriend);
+    },
+    removeFriendFromContacts(friendId) {
+      const friendIndex = this.friends.findIndex(friend => friend.id === friendId);
+      this.friends.splice(friendIndex, 1);
     }
-  }
+  },
 };
 </script>
 
@@ -51,7 +62,7 @@ export default {
 }
 
 html {
-  font-family: 'Jost', sans-serif;
+  font-family: "Jost", sans-serif;
 }
 
 body {
