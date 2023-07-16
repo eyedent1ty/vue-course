@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="addFriend">
+  <form @submit.prevent="submitData">
     <div>
       <label for="first-name">First name: </label>
       <input id="first-name" type="text" v-model="firstName" />
@@ -32,8 +32,8 @@
 <script>
 export default {
   emits: {
-    'add-friend': (newFriend) => {
-      if (newFriend) {
+    'add-friend': (newFriendContact) => {
+      if (newFriendContact) {
         return true;
       }
       console.warn('Friend argument for add-friend emitted event missing');
@@ -50,8 +50,8 @@ export default {
     };
   },
   methods: {
-    addFriend() {
-      const newFriend = {
+    submitData() {
+      const newFriendContact = {
         id: this.firstName,
         name: `${this.firstName} ${this.lastName}`,
         phone: this.phone,
@@ -59,7 +59,7 @@ export default {
         isFavorite: this.isFavorite
       };
 
-      this.$emit('add-friend', newFriend);
+      this.$emit('add-friend', newFriendContact);
     }
   }
 };
