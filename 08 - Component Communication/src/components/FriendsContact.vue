@@ -37,6 +37,17 @@ export default {
       default: false
     },
   },
+  // This property can be used to document the custom events that this component has
+  // emits: ['toggle-favorite'],
+  emits: {
+    'toggle-favorite': (friendId) => {
+      if (friendId) {
+        return true;
+      }
+      console.warn('friend id is missing as the argument of the toggle-favorite event');
+      return false;
+    }
+  },
   data() {
     return {
       isShowDetailsActive: false,
