@@ -24,8 +24,8 @@ export default {
     };
   },
   methods: {
-    setSelectedComponent(cmp) {
-      this.selectedComponent = cmp;
+    setSelectedComponent(componentName) {
+      this.selectedComponent = componentName;
     }
   }
 };
