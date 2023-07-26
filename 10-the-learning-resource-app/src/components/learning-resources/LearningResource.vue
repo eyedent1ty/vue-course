@@ -16,7 +16,7 @@
 <script>
 export default {
   props: ['id', 'title', 'description', 'link'],
-  emits: ['delete-resource'],
+  emits: ['delete'],
   methods: {
     emitDeleteEvent() {
       this.$emit('delete', this.id);
