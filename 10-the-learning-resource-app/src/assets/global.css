@@ -12,5 +12,6 @@
 }
 
 body {
+  margin: 0;
   font: normal 1rem Roboto, sans-serif;
 }
