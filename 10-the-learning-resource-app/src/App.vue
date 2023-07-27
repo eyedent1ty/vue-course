@@ -1,15 +1,13 @@
 <template>
-  <ul>
-    <stored-resource v-for="storedResource in storedResources" :item="storedResource" :key="storedResource.id"></stored-resource>
-  </ul>
+  <stored-resources :resources="storedResources"></stored-resources>
 </template>
 
 <script>
-import StoredResource from './components/StoredResource.vue';
+import StoredResources from './components/learning-resources/StoredResources.vue';
 
 export default {
   components: {
-    StoredResource
+    StoredResources
   },
   data() {
     return {
@@ -29,5 +27,5 @@ export default {
       ]
     };
   }
-}
+};
 </script>
