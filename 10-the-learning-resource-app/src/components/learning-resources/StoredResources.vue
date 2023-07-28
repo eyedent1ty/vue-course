@@ -7,6 +7,7 @@
       :title="resource.title"
       :description="resource.description"
       :link="resource.link"
+      @delete="$emit('delete', $event)"
     ></learning-resource>
   </ul>
 </template>
@@ -15,7 +16,7 @@
 import LearningResource from './LearningResource.vue';
 
 export default {
-  props: ['resources'],
+  inject: ['resources'],
   components: {
     LearningResource
   }
