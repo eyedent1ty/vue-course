@@ -9,7 +9,9 @@
       >Add Resource</base-button
     >
   </base-card>
-  <component :is="selectedTab" @delete="deleteResource"></component>
+  <keep-alive>
+    <component :is="selectedTab"></component>
+  </keep-alive>
 </template>
 
 <script>
@@ -17,6 +19,15 @@ import { computed } from 'vue';
 
 import StoredResources from './StoredResources.vue';
 import AddResource from './AddResource.vue';
+
+class Resource {
+  constructor(title, description, link) {
+    this.id = title.replaceAll(' ', '-').toLowerCase();
+    this.title = title;
+    this.description = description;
+    this.link = link;
+  }
+}
 
 export default {
   components: {
@@ -26,25 +37,21 @@ export default {
   data() {
     return {
       storedResources: [
-        {
-          id: 'official-guide',
-          title: 'Official Guide',
-          description: 'The official Vue.js documentation.',
-          link: 'https://vuejs.org'
-        },
-        {
-          id: 'google',
-          title: 'Google',
-          description: 'Learn to google...',
-          link: 'https://google.com'
-        }
+        new Resource(
+          'Official Guide',
+          'The official Vue.js documentation',
+          'https://vuejs.org'
+        ),
+        new Resource('Google', 'Learn to google...', 'https://google.com')
       ],
       selectedTab: ''
     };
   },
   provide() {
     return {
-      resources: computed(() => this.storedResources)
+      resources: computed(() => this.storedResources),
+      addNewResource: this.addNewResource,
+      deleteResource: this.deleteResource
     };
   },
   methods: {
@@ -58,6 +65,11 @@ export default {
     },
     getSelectedTab() {
       return this.selectedTab;
+    },
+    addNewResource(title, description, link) {
+      const newResource = new Resource(title, description, link);
+      this.storedResources.unshift(newResource);
+      this.selectedTab = 'stored-resources';
     }
   },
   computed: {

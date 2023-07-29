@@ -7,7 +7,6 @@
       :title="resource.title"
       :description="resource.description"
       :link="resource.link"
-      @delete="$emit('delete', $event)"
     ></learning-resource>
   </ul>
 </template>
