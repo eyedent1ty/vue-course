@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-
 import StoredResources from './StoredResources.vue';
 import AddResource from './AddResource.vue';
 
@@ -49,7 +47,7 @@ export default {
   },
   provide() {
     return {
-      resources: computed(() => this.storedResources),
+      resources: this.storedResources,
       addNewResource: this.addNewResource,
       deleteResource: this.deleteResource
     };
@@ -59,9 +57,10 @@ export default {
       this.selectedTab = tab;
     },
     deleteResource(id) {
-      this.storedResources = this.storedResources.filter(
-        (storedResource) => storedResource.id !== id
+      const index = this.storedResources.findIndex(
+        (storedResource) => storedResource.id === id
       );
+      this.storedResources.splice(index, 1);
     },
     getSelectedTab() {
       return this.selectedTab;
