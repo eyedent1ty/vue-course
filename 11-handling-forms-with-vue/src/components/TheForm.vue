@@ -57,21 +57,44 @@
     <div class="form-control">
       <h2>How do you learn?</h2>
       <div>
-        <input id="how-video" name="how" type="radio" />
+        <input
+          id="how-video"
+          name="how"
+          type="radio"
+          value="video"
+          v-model="how"
+        />
         <label for="how-video">Video Courses</label>
       </div>
       <div>
-        <input id="how-blogs" name="how" type="radio" />
+        <input
+          id="how-blogs"
+          name="how"
+          type="radio"
+          value="blogs"
+          v-model="how"
+        />
         <label for="how-blogs">Blogs</label>
       </div>
       <div>
-        <input id="how-other" name="how" type="radio" />
+        <input
+          id="how-other"
+          name="how"
+          type="radio"
+          value="other"
+          v-model="how"
+        />
         <label for="how-other">Other</label>
       </div>
     </div>
     <div class="form-control">
-      <input id="agreement" type="checkbox" v-model="agreement" ref="agreementInput" />
-      <label for="agreement" >Agree for the use of terms?</label>
+      <input
+        id="agreement"
+        type="checkbox"
+        v-model="agreement"
+        ref="agreementInput"
+      />
+      <label for="agreement">Agree for the use of terms?</label>
     </div>
     <div>
       <button>Save Data</button>
@@ -87,17 +110,15 @@ export default {
       enteredAge: null,
       referrer: 'wom',
       interests: [],
-      agreement: false
+      agreement: false,
+      how: 'video'
     };
   },
   methods: {
     submitForm() {
-      this.interests.forEach((interest) => console.log(interest));
-
-      console.log('agreement');
-      console.log(this.agreement);
-      console.log(this.$refs.agreementInput.value);
-      this.agreement = false;
+      console.log('how');
+      console.log(this.how);
+      this.how = 'video';
     }
   }
 };
