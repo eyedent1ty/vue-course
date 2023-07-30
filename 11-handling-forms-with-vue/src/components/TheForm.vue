@@ -2,11 +2,16 @@
   <form @submit.prevent="submitForm">
     <div class="form-control">
       <label for="user-name">Your Name</label>
-      <input id="user-name" name="user-name" type="text" ref="username" />
+      <input
+        id="user-name"
+        name="user-name"
+        type="text"
+        v-model="enteredUsername"
+      />
     </div>
     <div class="form-control">
       <label for="age">Your Age (Years)</label>
-      <input id="age" name="age" type="text" v-model.number="enteredAge" />
+      <input id="age" name="age" type="number" v-model.number="enteredAge" />
     </div>
     <div class="form-control">
       <label for="referrer">How did you hear about us?</label>
@@ -19,15 +24,33 @@
     <div class="form-control">
       <h2>What are you interested in?</h2>
       <div>
-        <input id="interest-news" name="interest" type="checkbox" />
+        <input
+          id="interest-news"
+          name="interest"
+          type="checkbox"
+          value="news"
+          v-model="interests"
+        />
         <label for="interest-news">News</label>
       </div>
       <div>
-        <input id="interest-tutorials" name="interest" type="checkbox" />
+        <input
+          id="interest-tutorials"
+          name="interest"
+          type="checkbox"
+          value="tutorials"
+          v-model="interests"
+        />
         <label for="interest-tutorials">Tutorials</label>
       </div>
       <div>
-        <input id="interest-nothing" name="interest" type="checkbox" />
+        <input
+          id="interest-nothing"
+          name="interest"
+          type="checkbox"
+          value="nothing"
+          v-model="interests"
+        />
         <label for="interest-nothing">Nothing</label>
       </div>
     </div>
@@ -46,6 +69,10 @@
         <label for="how-other">Other</label>
       </div>
     </div>
+    <div class="form-control">
+      <input id="agreement" type="checkbox" v-model="agreement" ref="agreementInput" />
+      <label for="agreement" >Agree for the use of terms?</label>
+    </div>
     <div>
       <button>Save Data</button>
     </div>
@@ -57,16 +84,23 @@ export default {
   data() {
     return {
       enteredUsername: '',
-      enteredAge: '',
-      referrer: 'wom'
+      enteredAge: null,
+      referrer: 'wom',
+      interests: [],
+      agreement: false
     };
-  }, 
+  },
   methods: {
     submitForm() {
-      console.log(this.referrer);
+      this.interests.forEach((interest) => console.log(interest));
+
+      console.log('agreement');
+      console.log(this.agreement);
+      console.log(this.$refs.agreementInput.value);
+      this.agreement = false;
     }
   }
-}
+};
 </script>
 
 <style scoped>
