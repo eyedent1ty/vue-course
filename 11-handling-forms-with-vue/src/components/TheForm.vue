@@ -90,6 +90,9 @@
       </div>
     </div>
     <div class="form-control">
+      <rating-control v-model="rating"></rating-control>
+    </div>
+    <div class="form-control">
       <input
         id="agreement"
         type="checkbox"
@@ -105,13 +108,19 @@
 </template>
 
 <script>
+import RatingControl from './RatingControl.vue';
+
 export default {
+  components: {
+    RatingControl
+  },  
   data() {
     return {
       enteredUsername: '',
       enteredAge: null,
       referrer: 'wom',
       interests: [],
+      rating: null,
       agreement: false,
       how: 'video',
       isEnteredUsernameInvalid: false
@@ -119,9 +128,8 @@ export default {
   },
   methods: {
     submitForm() {
-      console.log('how');
-      console.log(this.how);
-      this.how = 'video';
+      console.log(this.rating);
+      this.rating = null;
     },
     validateUsernameInput() {
       if (this.enteredUsername.length === 0) {
