@@ -45,6 +45,8 @@ export default {
         .then((response) => {
           if (response.ok) {
             return response.json();
+          } else {
+            throw new Error('Failed to fetch data - please try again later.');
           }
         })
         .then((data) => {
@@ -63,7 +65,7 @@ export default {
         .catch((error) => {
           console.log(error);
           this.isLoading = false;
-          this.error = 'Failed to fetch data - please try again later.'
+          this.error = error.message;
         });
     }
   },
