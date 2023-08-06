@@ -1,6 +1,7 @@
 <template>
   <the-navigation></the-navigation>
   <main>
+    <button @click="onClickConfirm">Go to teams</button>
     <router-view></router-view>
   </main>
 </template>
@@ -34,6 +35,11 @@ export default {
       teams: this.teams,
       users: this.users,
     };
+  },
+  methods: {
+    onClickConfirm() {
+      this.$router.push('/teams');
+    }
   }
 };
 </script>
