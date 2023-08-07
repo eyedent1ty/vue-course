@@ -14,7 +14,13 @@ export default {
       // return `/teams/${this.id}`;
       // Aside from passing a string from the to prop in the router link, you can pass an object with more detailed configuration
       // Also instead of passing the path, we can refer to the name of the route by declaring the name of route to the RouteConfiguration Options
-      return { name: 'team-members', params: { teamId: this.id } };
+      return {
+        name: 'team-members',
+        params: { teamId: this.id },
+        query: {
+          sort: 'asc'
+        }
+      };
     }
   }
 };
