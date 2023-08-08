@@ -15,6 +15,9 @@ const router = createRouter({
     { path: '/', redirect: '/teams' },
     {
       path: '/teams',
+      meta: {
+        needsAuth: true
+      },
       components: {
         default: TeamsList,
         footer: TeamsFooter
@@ -54,9 +57,17 @@ const router = createRouter({
 
 // The logic will be executed when the route changes
 router.beforeEach((to, from, next) => {
-  console.log('Global Navigation Guard');
+  console.log('Router.prototype.beforeEach executed');
+
+  if (to.meta.needsAuth) {
+    console.log('Needs auth!');
+  }
 
   next();
+});
+
+router.afterEach(() => {
+  console.log('Router.prototype.afterEach executed');
 });
 
 const app = createApp(App);
