@@ -3,7 +3,7 @@
     <div class="block" :class="{ animate: animatedBlock }"></div>
     <button @click="animateBlock">Animate</button>
   </div>
-  <base-modal @close="hideDialog" v-if="dialogIsVisible">
+  <base-modal @close="hideDialog" :open="dialogIsVisible">
     <p>This is a test dialog!</p>
     <button @click="hideDialog">Close it!</button>
   </base-modal>
@@ -92,20 +92,6 @@ button:active {
   animation: slide-fade 2s ease-in infinite alternate;
 }
 
-@keyframes slide-scale {
-  0% {
-    transform: translate(0, 0);
-  }
-
-  50% {
-    transform: translate(-150px, 0);
-  }
-
-  100% {
-    transform: translate(150px, 0);
-  }
-}
-
 .paragraph-enter-from {
   /* opacity: 0;
   transform: translateY(-30px); */
@@ -134,5 +120,19 @@ button:active {
 .paragraph-leave-to {
   /* opacity: 0;
   transform: translateY(30px); */
+}
+
+@keyframes slide-scale {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-150px, 0);
+  }
+
+  100% {
+    transform: translate(150px, 0);
+  }
 }
 </style>
