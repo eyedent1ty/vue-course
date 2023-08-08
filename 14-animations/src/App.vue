@@ -8,29 +8,40 @@
     <button @click="hideDialog">Close it!</button>
   </base-modal>
   <div class="container">
+    <transition>
+      <p v-if="isParagraphVisible">This is a test paragraph!</p>
+    </transition>
+    <button @click="toggleParagraph">Toggle Paragraph</button>
+  </div>
+  <div class="container">
     <button @click="showDialog">Show Dialog</button>
   </div>
-</template>  
+</template>
 
 <script>
 export default {
   data() {
-    return { 
+    return {
       animatedBlock: false,
-      dialogIsVisible: false 
+      dialogIsVisible: false,
+      isParagraphVisible: false,
+      isBlockVisible: true
     };
   },
   methods: {
     animateBlock() {
       this.animatedBlock = true;
-    }, 
+    },
     showDialog() {
       this.dialogIsVisible = true;
     },
     hideDialog() {
       this.dialogIsVisible = false;
     },
-  },
+    toggleParagraph() {
+      this.isParagraphVisible = !this.isParagraphVisible;
+    }
+  }
 };
 </script>
 
@@ -85,13 +96,41 @@ button:active {
   0% {
     transform: translate(0, 0);
   }
-  
+
   50% {
     transform: translate(-150px, 0);
   }
-  
+
   100% {
     transform: translate(150px, 0);
   }
+}
+
+.v-enter-from {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.v-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.v-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.v-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.v-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.v-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
