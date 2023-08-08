@@ -8,7 +8,7 @@
     <button @click="hideDialog">Close it!</button>
   </base-modal>
   <div class="container">
-    <transition>
+    <transition name="paragraph">
       <p v-if="isParagraphVisible">This is a test paragraph!</p>
     </transition>
     <button @click="toggleParagraph">Toggle Paragraph</button>
@@ -106,32 +106,32 @@ button:active {
   }
 }
 
-.v-enter-from {
+.paragraph-enter-from {
   /* opacity: 0;
   transform: translateY(-30px); */
 }
 
-.v-enter-active {
+.paragraph-enter-active {
   /* transition: all 0.3s ease-out; */
   animation: slide-scale 0.3s ease-in;
 }
 
-.v-enter-to {
+.paragraph-enter-to {
   /* opacity: 1;
   transform: translateY(0); */
 }
 
-.v-leave-from {
+.paragraph-leave-from {
   /* opacity: 1;
   transform: translateY(0); */
 }
 
-.v-leave-active {
+.paragraph-leave-active {
   /* transition: all 0.3s ease-out; */
   animation: slide-scale 0.3s ease-out;
 }
 
-.v-leave-to {
+.paragraph-leave-to {
   /* opacity: 0;
   transform: translateY(30px); */
 }
