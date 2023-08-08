@@ -18,7 +18,11 @@ export default {
   components: {
     TeamsItem
   },
-  inject: ['teams']
+  inject: ['teams'],
+  beforeRouteEnter(to, from, next) {
+    console.log('/teams ComponentPublicInstance.beforeRouteEnter executed');
+    next();
+  }
 };
 </script>
 

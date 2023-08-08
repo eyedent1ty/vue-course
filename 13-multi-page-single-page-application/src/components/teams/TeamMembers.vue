@@ -45,6 +45,10 @@ export default {
   created() {
     this.loadTeamMembers(this.teamId);
   },
+  beforeRouteUpdate(to, from, next) {
+    console.log('/teams/:teamId ComponentPublicInstance.beforeRouteUpdate executed');
+    next();
+  },
   watch: {
     teamId(newId) {
       this.loadTeamMembers(newId);
