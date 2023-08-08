@@ -48,6 +48,13 @@ const router = createRouter({
   }
 });
 
+// The logic will be executed when the route changes
+router.beforeEach((to, from, next) => {
+  console.log('Global Navigation Guard');
+
+  next();
+});
+
 const app = createApp(App);
 
 app.use(router);
