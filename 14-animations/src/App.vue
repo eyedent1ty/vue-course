@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <!-- <div class="container">
     <users-list></users-list>
   </div>
   <div class="container">
@@ -34,16 +34,21 @@
       <button @click="showUsers" v-if="!areUsersVisible">Show users</button>
       <button @click="hideUsers" v-else>Hide users</button>
     </transition>
-  </div>
+  </div> -->
+  <router-view v-slot="slotProps">
+    <transition name="page-fade">
+      <component :is="slotProps.Component"></component>
+    </transition>
+  </router-view>
 </template>
 
 <script>
-import UsersList from './components/UsersList.vue';
+// import UsersList from './components/UsersList.vue';
 
 export default {
-  components: {
-    UsersList
-  },
+  // components: {
+  //   UsersList
+  // },
   data() {
     return {
       animatedBlock: false,
@@ -177,6 +182,18 @@ button:active {
 
 .button-fade-leave-active {
   animation: button-fade 0.3s ease-in reverse;
+}
+
+.page-fade-enter-from {
+  opacity: 0;
+}
+
+.page-fade-enter-active {
+  transition: opacity 0.3s ease-out;
+}
+
+.page-fade-enter-to {
+  opacity: 1;
 }
 
 @keyframes slide-scale {
