@@ -8,7 +8,17 @@
     <button @click="hideDialog">Close it!</button>
   </base-modal>
   <div class="container">
-    <transition name="paragraph">
+    <transition
+      :css="false"
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @before-leave="beforeLeave"
+      @leave="leave"
+      @after-leave="afterLeave"
+      @enter-cancelled="enterCancelled"
+      @leave-cancelled="leaveCancelled"
+    >
       <p v-if="isParagraphVisible">This is a test paragraph!</p>
     </transition>
     <button @click="toggleParagraph">Toggle Paragraph</button>
@@ -32,13 +42,63 @@ export default {
       dialogIsVisible: false,
       isParagraphVisible: false,
       isBlockVisible: true,
-      areUsersVisible: false
+      areUsersVisible: false,
+      enterInterval: null,
+      leaveInterval: null,
+      paragraphOpacity: 0
     };
   },
   methods: {
+    enterCancelled(el) {
+      console.log(el);
+      clearInterval(this.enterInterval);
+    },
+    leaveCancelled(el) {
+      console.log(el);
+      clearInterval(this.leaveInterval);
+    },
+    beforeEnter(el) {
+      el.style.opacity = this.paragraphOpacity;
+    },
+    enter(el, done) {
+      let round = 1;
+      this.enterInterval = setInterval(() => {
+        this.paragraphOpacity = round * 0.01
+        el.style.opacity = this.paragraphOpacity;
+        round++;
+        if (round > 100) {
+          clearInterval(this.enterInterval);
+          done();
+        }
+      }, 20);
+    },
+    afterEnter(el) {
+      console.log('afterEnter()');
+      console.log(el);
+    },
+    beforeLeave(el) {
+      el.style.opacity = this.paragraphOpacity;
+    },
+    leave(el, done) {
+      let round = this.paragraphOpacity * 100;
+
+      this.leaveInterval = setInterval(() => {
+        this.paragraphOpacity = round * 0.01;
+        el.style.opacity = this.paragraphOpacity;
+        round--;
+        if (round < 0) {
+          clearInterval(this.leaveInterval);
+          done();
+        }
+      }, 20);
+    },
+    afterLeave(el) {
+      console.log('afterLeave()');
+      console.log(el);
+    },
     showUsers() {
       this.areUsersVisible = true;
-    },  
+    },
     hideUsers() {
       this.areUsersVisible = false;
     },
@@ -87,7 +147,9 @@ button:active {
   height: 8rem;
   background-color: #290033;
   margin-bottom: 2rem;
-  /* transition: transform 0.3s ease-out; */
+}
+.animate {
+  animation: slide-fade 2s ease-in infinite alternate;
 }
 .container {
   max-width: 40rem;
@@ -99,17 +161,6 @@ button:active {
   padding: 2rem;
   border: 2px solid #ccc;
   border-radius: 12px;
-}
-.animate {
-  animation: slide-fade 2s ease-in infinite alternate;
-}
-
-.paragraph-enter-active {
-  animation: slide-scale 0.3s ease-in;
-}
-
-.paragraph-leave-active {
-  animation: slide-scale 0.3s ease-out;
 }
 
 .button-fade-enter-active {
@@ -140,7 +191,7 @@ button:active {
   }
 
   to {
-    opacity: 1
+    opacity: 1;
   }
 }
 </style>
