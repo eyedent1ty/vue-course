@@ -26,7 +26,7 @@ export default {
       }
     },
     removeUser(user) {
-      this.users = this.users.filter(usr => usr !== user);
+      this.users = this.users.filter((usr) => usr !== user);
     }
   }
 };
@@ -63,9 +63,14 @@ li {
 
 .user-list-leave-active {
   transition: all 0.3s ease-in;
+  position: absolute;
 }
 
 .user-list-leave-to {
   transform: translateY(-150px) scale(1.1);
+}
+
+.user-list-move {
+  transition: transform 0.2s ease;
 }
 </style>
