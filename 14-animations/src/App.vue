@@ -16,6 +16,12 @@
   <div class="container">
     <button @click="showDialog">Show Dialog</button>
   </div>
+  <div class="container">
+    <transition name="button-fade" mode="out-in">
+      <button @click="showUsers" v-if="!areUsersVisible">Show users</button>
+      <button @click="hideUsers" v-else>Hide users</button>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -25,10 +31,17 @@ export default {
       animatedBlock: false,
       dialogIsVisible: false,
       isParagraphVisible: false,
-      isBlockVisible: true
+      isBlockVisible: true,
+      areUsersVisible: false
     };
   },
   methods: {
+    showUsers() {
+      this.areUsersVisible = true;
+    },  
+    hideUsers() {
+      this.areUsersVisible = false;
+    },
     animateBlock() {
       this.animatedBlock = true;
     },
@@ -88,38 +101,23 @@ button:active {
   border-radius: 12px;
 }
 .animate {
-  /* transform: translateX(-150px); */
   animation: slide-fade 2s ease-in infinite alternate;
 }
 
-.paragraph-enter-from {
-  /* opacity: 0;
-  transform: translateY(-30px); */
-}
-
 .paragraph-enter-active {
-  /* transition: all 0.3s ease-out; */
   animation: slide-scale 0.3s ease-in;
 }
 
-.paragraph-enter-to {
-  /* opacity: 1;
-  transform: translateY(0); */
-}
-
-.paragraph-leave-from {
-  /* opacity: 1;
-  transform: translateY(0); */
-}
-
 .paragraph-leave-active {
-  /* transition: all 0.3s ease-out; */
   animation: slide-scale 0.3s ease-out;
 }
 
-.paragraph-leave-to {
-  /* opacity: 0;
-  transform: translateY(30px); */
+.button-fade-enter-active {
+  animation: button-fade 0.3s ease-out;
+}
+
+.button-fade-leave-active {
+  animation: button-fade 0.3s ease-in reverse;
 }
 
 @keyframes slide-scale {
@@ -133,6 +131,16 @@ button:active {
 
   100% {
     transform: translate(150px, 0);
+  }
+}
+
+@keyframes button-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1
   }
 }
 </style>
