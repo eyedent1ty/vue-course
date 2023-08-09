@@ -10,6 +10,14 @@ const store = createStore({
     return {
       counter: 0
     };
+  },
+  mutations: {
+    incrementCounter(state) {
+      state.counter++;
+    },
+    increaseCounter(state, payload) {
+      state.counter += payload.value;
+    }
   }
 });
 
