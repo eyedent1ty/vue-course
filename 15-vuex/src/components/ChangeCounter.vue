@@ -3,14 +3,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   methods: {
-    addOne() {
-      // this.$store.commit('increaseCounter', { value: 2 });
-
-      // This is another way of using an mutation method and passing a payload
-      this.$store.dispatch('addOne');
-    }
+    ...mapActions(['addOne'])
   }
 }
 </script>
