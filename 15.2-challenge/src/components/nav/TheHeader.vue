@@ -26,8 +26,10 @@
 
 <script>
 export default {
-  inject: ['cart'],
   computed: {
+    cart() {
+      return this.$store.getters.cart;
+    },
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
     }
