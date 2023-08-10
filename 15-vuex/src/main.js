@@ -6,6 +6,8 @@ import App from './App.vue';
 const app = createApp(App);
 
 const counterModule = {
+  namespaced: true,
+  // States that is defined in a module is a local state
   state() {
     return {
       counter: 0
@@ -51,6 +53,7 @@ const counterModule = {
 
 const store = createStore({
   modules: {
+    // <namespace>: <module>
     numbers: counterModule
   },
   state() {
@@ -60,15 +63,15 @@ const store = createStore({
   },
   mutations: {
     setIsLoggedIn(state, payload) {
-      state.isLoggedIn = payload;
+      state.isLoggedIn = payload.isAuth;
     }
   },
   actions: {
     login(context) {
-      context.commit('setIsLoggedIn', true);
+      context.commit('setIsLoggedIn', { isAuth: true });
     },
     logout(context) {
-      context.commit('setIsLoggedIn', false)
+      context.commit('setIsLoggedIn', { isAuth: false })
     }
   },
   getters: {

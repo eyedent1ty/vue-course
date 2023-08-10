@@ -29,7 +29,7 @@ export default {
     UserAuth
   },
   methods: {
-    ...mapActions(['increaseCounter'])
+    ...mapActions('numbers', ['increaseCounter'])
   },
   computed: {
     ...mapGetters(['isLoggedIn'])
