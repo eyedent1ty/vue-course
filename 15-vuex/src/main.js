@@ -12,11 +12,23 @@ const store = createStore({
     };
   },
   mutations: {
-    incrementCounter(state) {
+    addOne(state) {
       state.counter++;
     },
     increaseCounter(state, payload) {
       state.counter += payload.value;
+    }
+  },
+  actions: {
+    addOne(context) {
+      context.commit('addOne');
+    },
+    increaseCounter(context, payload) {
+      console.log(context);
+ 
+      setTimeout(() => {
+        context.commit('increaseCounter', payload);
+      }, 2000);
     }
   },
   getters: {

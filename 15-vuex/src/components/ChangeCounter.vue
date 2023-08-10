@@ -1,18 +1,15 @@
 <template>
-  <button @click="incrementCounter">Add 2</button>
+  <button @click="addOne">Add 1</button>
 </template>
 
 <script>
 export default {
   methods: {
-    incrementCounter() {
+    addOne() {
       // this.$store.commit('increaseCounter', { value: 2 });
 
       // This is another way of using an mutation method and passing a payload
-      this.$store.commit({ 
-        type: 'increaseCounter',
-        value: 2
-      });
+      this.$store.dispatch('addOne');
     }
   }
 }
