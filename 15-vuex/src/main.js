@@ -5,7 +5,7 @@ import App from './App.vue';
 
 const app = createApp(App);
 
-const store = createStore({
+const counterModule = {
   state() {
     return {
       counter: 0
@@ -24,8 +24,6 @@ const store = createStore({
       context.commit('addOne');
     },
     increaseCounter(context, payload) {
-      console.log(context);
- 
       setTimeout(() => {
         context.commit('increaseCounter', payload);
       }, 2000);
@@ -47,6 +45,35 @@ const store = createStore({
       }
 
       return finalCounter
+    }
+  }
+};
+
+const store = createStore({
+  modules: {
+    numbers: counterModule
+  },
+  state() {
+    return {
+      isLoggedIn: false
+    };
+  },
+  mutations: {
+    setIsLoggedIn(state, payload) {
+      state.isLoggedIn = payload;
+    }
+  },
+  actions: {
+    login(context) {
+      context.commit('setIsLoggedIn', true);
+    },
+    logout(context) {
+      context.commit('setIsLoggedIn', false)
+    }
+  },
+  getters: {
+    isLoggedIn(state) {
+      return state.isLoggedIn;
     }
   }
 });
