@@ -1,5 +1,3 @@
-import productsMutations from './mutations.js';
-import productsActions from './actions.js';
 import productsGetters from './getters.js';
 
 const productsModule = {
@@ -35,8 +33,6 @@ const productsModule = {
       ]
     };
   },
-  mutations: productsMutations,
-  actions: productsActions,
   getters: productsGetters
 };
 

@@ -9,16 +9,6 @@ import TheHeader from './components/nav/TheHeader.vue';
 export default {
   components: {
     TheHeader
-  },
-  data() {
-    return {
-      cart: { items: [], total: 0, qty: 0 },
-    };
-  },
-  provide() {
-    return {
-      cart: this.cart,
-    };
   }
 };
 </script>
