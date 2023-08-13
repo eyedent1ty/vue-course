@@ -28,11 +28,16 @@ export default {
   actions: {},
   getters: {
     coaches(state) {
-      return state.coaches
+      return state.coaches;
     },
     hasCoaches(state) {
       // Checks if the value of the state coaches is truthy then checks whether it has coaches
       return state.coaches && state.coaches.length > 0;
+    },
+    findCoach(state) {
+      return function (id) {
+        return state.coaches.find((coach) => coach.id === id);
+      };
     }
   }
 };
