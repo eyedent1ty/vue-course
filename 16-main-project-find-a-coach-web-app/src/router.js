@@ -26,7 +26,8 @@ const router = createRouter({
           path: 'contact',
           component: ContactCoach
         }
-      ]
+      ],
+      props: true
     },
     {
       path: '/register',

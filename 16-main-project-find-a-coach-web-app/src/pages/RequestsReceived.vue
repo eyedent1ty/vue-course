@@ -1,3 +1,3 @@
 <template>
-  <h1>RequestsReceived</h1>
+  REQUESTS
 </template>
