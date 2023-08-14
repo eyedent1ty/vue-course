@@ -24,8 +24,17 @@ export default {
       ]
     };
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    registerCoach(state, payload) {
+      state.coaches.push(payload);
+    }
+  },
+  actions: {
+    registerCoach(context, coachData) {
+      coachData.id = 'c3';
+      context.commit('registerCoach', coachData);
+    }
+  },
   getters: {
     coaches(state) {
       return state.coaches;
@@ -38,6 +47,10 @@ export default {
       return function (id) {
         return state.coaches.find((coach) => coach.id === id);
       };
+    },
+    isCoach(_, getters, _2, rootGetters) {
+      const userId = rootGetters.userId;
+      return getters.coaches.some((coach) => coach.id === userId);
     }
   }
 };
