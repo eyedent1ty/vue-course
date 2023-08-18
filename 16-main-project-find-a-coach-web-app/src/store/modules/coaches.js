@@ -5,26 +5,8 @@ export default {
   namespaced: true,
   state() {
     return {
-      coaches: [
-        // {
-        //   id: 'c1',
-        //   firstName: 'Maximilian',
-        //   lastName: 'Schwarzmüller',
-        //   areas: ['frontend', 'backend', 'career'],
-        //   description:
-        //     "I'm Maximilian and I've worked as a freelance web developer for years. Let me help you become a developer as well!",
-        //   hourlyRate: 30
-        // },
-        // {
-        //   id: 'c2',
-        //   firstName: 'Julie',
-        //   lastName: 'Jones',
-        //   areas: ['frontend', 'career'],
-        //   description:
-        //     'I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.',
-        //   hourlyRate: 30
-        // }
-      ]
+      coaches: [],
+      lastFetchTimestamp: null
     };
   },
   mutations: {
@@ -33,19 +15,19 @@ export default {
     },
     setCoaches(state, newCoaches) {
       state.coaches = newCoaches;
+    },
+    setLastFetchTimestamp(state, newLastFetchTimestamp) {
+      state.lastFetchTimestamp = newLastFetchTimestamp;
     }
   },
   actions: {
     async registerCoach(context, coachData) {
       const userId = context.rootGetters.userId;
 
-      const response = await fetch(
-        `${API_LINK}/${userId}.json`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(coachData)
-        }
-      );
+      const response = await fetch(`${API_LINK}/${userId}.json`, {
+        method: 'PUT',
+        body: JSON.stringify(coachData)
+      });
 
       if (!response.ok) {
         // error...
@@ -56,10 +38,13 @@ export default {
         id: userId
       });
     },
-    async loadCoaches(context) {
-      const response = await fetch(
-        `${API_LINK}.json`
-      );
+    async loadCoaches(context, payload) {
+
+      if (!payload.forceRefresh && !context.getters.shouldUpdate) {
+        return;
+      }
+
+      const response = await fetch(`${API_LINK}.json`);
 
       const responseData = await response.json();
 
@@ -80,6 +65,8 @@ export default {
       });
 
       context.commit('setCoaches', coaches);
+      const currentTimestamp = new Date().getTime();
+      context.commit('setLastFetchTimestamp', currentTimestamp);
     }
   },
   getters: {
@@ -98,6 +85,14 @@ export default {
     isCoach(_, getters, _2, rootGetters) {
       const userId = rootGetters.userId;
       return getters.coaches.some((coach) => coach.id === userId);
+    },
+    shouldUpdate(state) {
+      if (state.lastFetchTimestamp === null) {
+        return true;
+      }
+
+      const currentTimestamp = new Date().getTime();
+      return (currentTimestamp - state.lastFetchTimestamp) / 1000 > 60;
     }
   }
 };

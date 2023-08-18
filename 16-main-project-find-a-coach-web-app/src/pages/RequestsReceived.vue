@@ -1,5 +1,9 @@
 <template>
-  <base-dialog :show="!!error" title="Failed to fetch requests" @close="handleError">
+  <base-dialog
+    :show="!!error"
+    title="Failed to fetch requests"
+    @close="handleError"
+  >
     <p>{{ error }}</p>
   </base-dialog>
   <section>

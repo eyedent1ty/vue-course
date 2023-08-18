@@ -1,5 +1,9 @@
 <template>
-  <base-dialog :show="!!error" title="Failed to fetch coaches" @close="handleError">
+  <base-dialog
+    :show="!!error"
+    title="Failed to fetch coaches"
+    @close="handleError"
+  >
     <p>{{ error }}</p>
   </base-dialog>
   <section>
@@ -8,7 +12,9 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
+        <base-button mode="outline" @click="loadCoaches(true)"
+          >Refresh</base-button
+        >
         <base-button link to="/register" v-if="!isCoach && !isLoading"
           >Register a Coach</base-button
         >
@@ -83,10 +89,12 @@ export default {
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
     },
-    async loadCoaches() {
+    async loadCoaches(forceRefresh = false) {
       this.isLoading = true;
       try {
-        await this.$store.dispatch('coaches/loadCoaches');
+        await this.$store.dispatch('coaches/loadCoaches', {
+          forceRefresh
+        });
       } catch (error) {
         this.error = error.message || 'Something went wrong.';
       }
@@ -96,7 +104,7 @@ export default {
       this.error = null;
     }
   },
-  created() { 
+  created() {
     this.loadCoaches();
   }
 };

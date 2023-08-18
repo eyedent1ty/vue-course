@@ -62,7 +62,6 @@ export default {
         };
         requests.push(request);
       });
-      console.log(requests);
       context.commit('setRequests', requests);
     }
   },
