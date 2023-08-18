@@ -58,18 +58,19 @@ export default {
         'https://find-a-coach-project-fd7f4-default-rtdb.firebaseio.com/coaches.json'
       );
 
-      if (!response.ok) {
-        return;
-      }
+      const responseData = await response.json();
 
-      const data = await response.json();
+      if (!response.ok) {
+        const error = new Error(responseData.message || 'Failed to fetch coaches.');
+        throw error;
+      }
 
       const coaches = [];
 
-      Object.keys(data).forEach((id) => {
+      Object.keys(responseData).forEach((id) => {
         coaches.push({
           id,
-          ...data[id]
+          ...responseData[id]
         });
       });
 
