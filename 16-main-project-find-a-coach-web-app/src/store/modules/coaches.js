@@ -1,3 +1,6 @@
+const API_LINK =
+  'https://find-a-coach-project-fd7f4-default-rtdb.firebaseio.com/coaches';
+
 export default {
   namespaced: true,
   state() {
@@ -37,7 +40,7 @@ export default {
       const userId = context.rootGetters.userId;
 
       const response = await fetch(
-        `https://find-a-coach-project-fd7f4-default-rtdb.firebaseio.com/coaches/${userId}.json`,
+        `${API_LINK}/${userId}.json`,
         {
           method: 'PUT',
           body: JSON.stringify(coachData)
@@ -55,13 +58,15 @@ export default {
     },
     async loadCoaches(context) {
       const response = await fetch(
-        'https://find-a-coach-project-fd7f4-default-rtdb.firebaseio.com/coaches.json'
+        `${API_LINK}.json`
       );
 
       const responseData = await response.json();
 
       if (!response.ok) {
-        const error = new Error(responseData.message || 'Failed to fetch coaches.');
+        const error = new Error(
+          responseData.message || 'Failed to fetch coaches.'
+        );
         throw error;
       }
 
