@@ -14,7 +14,7 @@ const requestModule: Module<RequestsState, RootState> = {
   },
   mutations: {
     addRequest(state, payload) {
-      state.requests.push(payload as never);
+      state.requests.push(payload);
     },
     setRequests(state, newRequests) {
       state.requests = newRequests;
@@ -50,7 +50,9 @@ const requestModule: Module<RequestsState, RootState> = {
     },
     async loadRequests(context) {
       const userId = context.rootGetters.userId;
-      const response = await fetch(`${API_LINK}/${userId}.json`);
+      const token = context.rootGetters.token;
+
+      const response = await fetch(`${API_LINK}/${userId}.json?auth=${token}`);
       const responseData = (await response.json()) || {};
 
       if (!response.ok) {

@@ -1,6 +1,6 @@
 import { Module } from 'vuex';
 
-import { AuthenticationState, RootState } from '@/global/types';
+import { AuthenticationCredentials, AuthenticationState, RootState } from '@/global/types';
 
 const authModule: Module<AuthenticationState, RootState> = {
   state() {
@@ -11,26 +11,24 @@ const authModule: Module<AuthenticationState, RootState> = {
     };
   },
   mutations: {
-    setUser(state, payload) {
-      state.token = payload.token;
-      state.userId = payload.userId;
-      state.tokenExpiration = payload.tokenExpiration;
+    setUser(state, user: AuthenticationState) {
+      state.token = user.token;
+      state.userId = user.userId;
+      state.tokenExpiration = user.tokenExpiration;
     }
   },
   actions: {
-    login() {},
-
-    async signup(context, payload) {
+    async login(context, credentials: AuthenticationCredentials) {
       const response = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            email: payload.email,
-            password: payload.password,
+            email: credentials.email,
+            password: credentials.password,
             returnSecureToken: true
           })
         }
@@ -46,8 +44,38 @@ const authModule: Module<AuthenticationState, RootState> = {
         throw error;
       }
 
-      console.log(response);
-      console.log(responseData);
+      context.commit('setUser', {
+        token: responseData.idToken,
+        userId: responseData.localId,
+        tokenExpiration: responseData.expiresIn
+      });
+    },
+
+    async signup(context, credentials: AuthenticationCredentials) {
+      const response = await fetch(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+            returnSecureToken: true
+          })
+        }
+      );
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        console.log(response);
+        const error = new Error(
+          responseData.message || 'Failed to authenticate'
+        );
+        throw error;
+      }
 
       context.commit('setUser', {
         token: responseData.idToken,
@@ -59,6 +87,9 @@ const authModule: Module<AuthenticationState, RootState> = {
   getters: {
     userId(state) {
       return state.userId;
+    },
+    token(state) {
+      return state.token;
     }
   }
 };

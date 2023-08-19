@@ -15,7 +15,7 @@ const coachesModule: Module<CoachesState, RootState> = {
   },
   mutations: {
     registerCoach(state, newCoach: Coach) {
-      state.coaches.push(newCoach as never);
+      state.coaches.push(newCoach);
     },
     setCoaches(state, newCoaches) {
       state.coaches = newCoaches;
@@ -27,8 +27,9 @@ const coachesModule: Module<CoachesState, RootState> = {
   actions: {
     async registerCoach(context, coachData) {
       const userId = context.rootGetters.userId;
+      const token = context.rootGetters.token;
 
-      const response = await fetch(`${API_LINK}/${userId}.json`, {
+      const response = await fetch(`${API_LINK}/${userId}.json?auth=${token}`, {
         method: 'PUT',
         body: JSON.stringify(coachData)
       });

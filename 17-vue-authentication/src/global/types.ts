@@ -1,7 +1,7 @@
 interface RootState {}
 
 interface CoachesState {
-  coaches: Array<Coach> | [];
+  coaches: Array<Coach>;
   lastFetchTimestamp: number | null;
 }
 
@@ -15,7 +15,7 @@ interface Coach {
 }
 
 interface RequestsState {
-  requests: Array<Request> | [];
+  requests: Array<Request>;
 }
 
 interface Request {
@@ -31,11 +31,17 @@ interface AuthenticationState {
   tokenExpiration: string | null;
 }
 
+interface AuthenticationCredentials {
+  email: string;
+  password: string;
+}
+
 export {
   RootState,
   CoachesState,
   Coach,
   RequestsState,
   Request,
-  AuthenticationState
+  AuthenticationState,
+  AuthenticationCredentials
 };
