@@ -11,7 +11,7 @@
         <input type="password" id="password" v-model.trim="password" />
       </div>
 
-      <p v-if="formIsValid">
+      <p v-if="!formIsValid">
         Please enter a valid email and password (must be at least 6 characters
         long).
       </p>
@@ -56,6 +56,15 @@ export default {
       ) {
         this.formIsValid = false;
         return;
+      }
+
+      if (this.mode === 'login') {
+        // ...
+      } else {
+        this.$store.dispatch('signup', {
+          email: this.email,
+          password: this.password
+        });
       }
     },
     switchAuthMode() {
