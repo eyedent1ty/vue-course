@@ -1,7 +1,11 @@
+import { Module } from 'vuex';
+
+import { Coach, CoachesState, RootState } from '../../global/types';
+
 const API_LINK =
   'https://find-a-coach-project-fd7f4-default-rtdb.firebaseio.com/coaches';
 
-export default {
+const coachesModule: Module<CoachesState, RootState> = {
   namespaced: true,
   state() {
     return {
@@ -10,8 +14,8 @@ export default {
     };
   },
   mutations: {
-    registerCoach(state, newCoach) {
-      state.coaches.push(newCoach);
+    registerCoach(state, newCoach: Coach) {
+      state.coaches.push(newCoach as never);
     },
     setCoaches(state, newCoaches) {
       state.coaches = newCoaches;
@@ -39,7 +43,6 @@ export default {
       });
     },
     async loadCoaches(context, payload) {
-
       if (!payload.forceRefresh && !context.getters.shouldUpdate) {
         return;
       }
@@ -55,7 +58,7 @@ export default {
         throw error;
       }
 
-      const coaches = [];
+      const coaches: Array<Coach> = [];
 
       Object.keys(responseData).forEach((id) => {
         coaches.push({
@@ -78,13 +81,13 @@ export default {
       return state.coaches && state.coaches.length > 0;
     },
     findCoach(state) {
-      return function (id) {
-        return state.coaches.find((coach) => coach.id === id);
+      return function (id: string) {
+        return state.coaches.find((coach: Coach) => coach.id === id);
       };
     },
     isCoach(_, getters, _2, rootGetters) {
       const userId = rootGetters.userId;
-      return getters.coaches.some((coach) => coach.id === userId);
+      return getters.coaches.some((coach: Coach) => coach.id === userId);
     },
     shouldUpdate(state) {
       if (state.lastFetchTimestamp === null) {
@@ -96,3 +99,5 @@ export default {
     }
   }
 };
+
+export default coachesModule;

@@ -8,13 +8,15 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
+
 import TheHeader from './components/layout/TheHeader.vue';
 
-export default {
+export default defineComponent({
   components: {
     TheHeader
   }
-};
+});
 </script>
 
 <style>

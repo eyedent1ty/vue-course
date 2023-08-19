@@ -1,4 +1,8 @@
-export default {
+import { Module } from 'vuex';
+
+import { AuthenticationState, RootState } from '@/global/types';
+
+const authModule: Module<AuthenticationState, RootState> = {
   state() {
     return {
       userId: null,
@@ -58,3 +62,5 @@ export default {
     }
   }
 };
+
+export default authModule;

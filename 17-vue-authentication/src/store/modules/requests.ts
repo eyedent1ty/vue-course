@@ -1,7 +1,11 @@
+import { Module } from 'vuex';
+
+import { RequestsState, RootState } from '@/global/types';
+
 const API_LINK =
   'https://find-a-coach-project-fd7f4-default-rtdb.firebaseio.com/requests';
 
-export default {
+const requestModule: Module<RequestsState, RootState> = {
   namespaced: true,
   state() {
     return {
@@ -10,7 +14,7 @@ export default {
   },
   mutations: {
     addRequest(state, payload) {
-      state.requests.push(payload);
+      state.requests.push(payload as never);
     },
     setRequests(state, newRequests) {
       state.requests = newRequests;
@@ -22,7 +26,9 @@ export default {
 
       const newRequest = {
         userEmail: payload.email,
-        message: payload.message
+        message: payload.message,
+        id: null,
+        coachId: null
       };
 
       const response = await fetch(`${API_LINK}/${coachId}.json`, {
@@ -54,7 +60,8 @@ export default {
         throw error;
       }
 
-      const requests = [];
+      const requests: Array<Request> = [];
+
       Object.keys(responseData).forEach((requestId) => {
         const request = {
           id: requestId,
@@ -74,3 +81,5 @@ export default {
     }
   }
 };
+
+export default requestModule;
