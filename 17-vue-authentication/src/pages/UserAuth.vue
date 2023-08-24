@@ -95,9 +95,12 @@ export default {
         }
       } catch (error) {
         this.error = error.message || 'Something went wrong.';
+        this.isLoading = false;
+        return;
       }
 
       this.isLoading = false;
+      this.$router.replace('/coaches');
     },
     switchAuthMode() {
       if (this.mode === 'login') {

@@ -48,7 +48,7 @@ const coachesModule: Module<CoachesState, RootState> = {
     },
     async loadCoaches(
       context: ActionContext<CoachesState, RootState>,
-      payload: { forceRefresh: boolean, shouldUpdate: boolean }
+      payload: { forceRefresh: boolean; shouldUpdate: boolean }
     ): Promise<void> {
       if (!payload.forceRefresh && !context.getters.shouldUpdate) {
         return;

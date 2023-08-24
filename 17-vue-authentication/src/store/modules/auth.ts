@@ -1,4 +1,4 @@
-import { Module } from 'vuex';
+import { ActionContext, Module } from 'vuex';
 
 import {
   AuthenticationCredentials,
@@ -44,7 +44,6 @@ const authModule: Module<AuthenticationState, RootState> = {
       const responseData = await response.json();
 
       if (!response.ok) {
-        console.log(response);
         const error = new Error(
           responseData.message || 'Failed to authenticate'
         );
@@ -92,6 +91,14 @@ const authModule: Module<AuthenticationState, RootState> = {
         userId: responseData.localId,
         tokenExpiration: responseData.expiresIn
       });
+    },
+
+    logout(context: ActionContext<AuthenticationState, RootState>): void {
+      context.commit('setUser', {
+        token: null,
+        userId: null,
+        tokenExpiration: null
+      });
     }
   },
   getters: {
@@ -100,6 +107,9 @@ const authModule: Module<AuthenticationState, RootState> = {
     },
     token(state): string | null {
       return state.token;
+    },
+    isAuthenticated(state): boolean {
+      return !!state.token;
     }
   }
 };

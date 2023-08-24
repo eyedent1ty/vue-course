@@ -9,12 +9,34 @@
           <router-link to="/coaches">All Coaches</router-link>
         </li>
         <li>
-          <router-link to="/requests">Requests</router-link>
+          <router-link to="/auth" v-if="!isLoggedIn">Login</router-link>
+          <router-link to="/requests" v-else>Requests</router-link>
+        </li>
+        <li v-if="isLoggedIn">
+          <base-button @click="onClickLogout">Logout</base-button>
         </li>
       </ul>
     </nav>
   </header>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  computed: {
+    isLoggedIn(): boolean {
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods: {
+    onClickLogout() {
+      this.$store.dispatch('logout');
+      this.$router.replace('/coaches');
+    }
+  }
+});
+</script>
 
 <style scoped>
 header {
@@ -48,8 +70,7 @@ h1 a {
 }
 
 h1 a:hover,
-h1 a:active
-h1 a.router-link-active {
+h1 a:active h1 a.router-link-active {
   border-color: transparent;
 }
 
