@@ -1,6 +1,6 @@
 import { Module } from 'vuex';
 
-import { RequestsState, RootState } from '@/global/types';
+import { RequestsState, RootState, Request } from '@/global/types';
 
 const API_LINK =
   'https://find-a-coach-project-fd7f4-default-rtdb.firebaseio.com/requests';
@@ -13,15 +13,15 @@ const requestModule: Module<RequestsState, RootState> = {
     };
   },
   mutations: {
-    addRequest(state, payload) {
+    addRequest(state, payload): void {
       state.requests.push(payload);
     },
-    setRequests(state, newRequests) {
+    setRequests(state, newRequests): void {
       state.requests = newRequests;
     }
   },
   actions: {
-    async addRequest(context, payload) {
+    async addRequest(context, payload): Promise<void> {
       const coachId = payload.coachId;
 
       const newRequest = {
@@ -48,7 +48,7 @@ const requestModule: Module<RequestsState, RootState> = {
 
       context.commit('addRequest', newRequest);
     },
-    async loadRequests(context) {
+    async loadRequests(context): Promise<void> {
       const userId = context.rootGetters.userId;
       const token = context.rootGetters.token;
 
@@ -62,7 +62,7 @@ const requestModule: Module<RequestsState, RootState> = {
         throw error;
       }
 
-      const requests: Array<Request> = [];
+      const requests: Request[] = [];
 
       Object.keys(responseData).forEach((requestId) => {
         const request = {
@@ -75,10 +75,10 @@ const requestModule: Module<RequestsState, RootState> = {
     }
   },
   getters: {
-    requests(state) {
+    requests(state): Request[] {
       return state.requests;
     },
-    hasRequests(_, getters) {
+    hasRequests(_, getters): boolean {
       return getters.requests && getters.requests.length > 0;
     }
   }

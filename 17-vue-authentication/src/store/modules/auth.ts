@@ -1,6 +1,10 @@
 import { Module } from 'vuex';
 
-import { AuthenticationCredentials, AuthenticationState, RootState } from '@/global/types';
+import {
+  AuthenticationCredentials,
+  AuthenticationState,
+  RootState
+} from '@/global/types';
 
 const authModule: Module<AuthenticationState, RootState> = {
   state() {
@@ -11,14 +15,17 @@ const authModule: Module<AuthenticationState, RootState> = {
     };
   },
   mutations: {
-    setUser(state, user: AuthenticationState) {
+    setUser(state, user: AuthenticationState): void {
       state.token = user.token;
       state.userId = user.userId;
       state.tokenExpiration = user.tokenExpiration;
     }
   },
   actions: {
-    async login(context, credentials: AuthenticationCredentials) {
+    async login(
+      context,
+      credentials: AuthenticationCredentials
+    ): Promise<void> {
       const response = await fetch(
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg',
         {
@@ -51,7 +58,10 @@ const authModule: Module<AuthenticationState, RootState> = {
       });
     },
 
-    async signup(context, credentials: AuthenticationCredentials) {
+    async signup(
+      context,
+      credentials: AuthenticationCredentials
+    ): Promise<void> {
       const response = await fetch(
         'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg',
         {
@@ -85,10 +95,10 @@ const authModule: Module<AuthenticationState, RootState> = {
     }
   },
   getters: {
-    userId(state) {
+    userId(state): string | null {
       return state.userId;
     },
-    token(state) {
+    token(state): string | null {
       return state.token;
     }
   }

@@ -1,4 +1,4 @@
-import { Module } from 'vuex';
+import { Module, ActionContext } from 'vuex';
 
 import { Coach, CoachesState, RootState } from '../../global/types';
 
@@ -14,18 +14,21 @@ const coachesModule: Module<CoachesState, RootState> = {
     };
   },
   mutations: {
-    registerCoach(state, newCoach: Coach) {
+    registerCoach(state, newCoach: Coach): void {
       state.coaches.push(newCoach);
     },
-    setCoaches(state, newCoaches) {
+    setCoaches(state, newCoaches): void {
       state.coaches = newCoaches;
     },
-    setLastFetchTimestamp(state, newLastFetchTimestamp) {
+    setLastFetchTimestamp(state, newLastFetchTimestamp): void {
       state.lastFetchTimestamp = newLastFetchTimestamp;
     }
   },
   actions: {
-    async registerCoach(context, coachData) {
+    async registerCoach(
+      context: ActionContext<CoachesState, RootState>,
+      coachData
+    ): Promise<void> {
       const userId = context.rootGetters.userId;
       const token = context.rootGetters.token;
 
@@ -43,7 +46,10 @@ const coachesModule: Module<CoachesState, RootState> = {
         id: userId
       });
     },
-    async loadCoaches(context, payload) {
+    async loadCoaches(
+      context: ActionContext<CoachesState, RootState>,
+      payload: { forceRefresh: boolean, shouldUpdate: boolean }
+    ): Promise<void> {
       if (!payload.forceRefresh && !context.getters.shouldUpdate) {
         return;
       }
@@ -59,7 +65,7 @@ const coachesModule: Module<CoachesState, RootState> = {
         throw error;
       }
 
-      const coaches: Array<Coach> = [];
+      const coaches: Coach[] = [];
 
       Object.keys(responseData).forEach((id) => {
         coaches.push({
@@ -74,23 +80,23 @@ const coachesModule: Module<CoachesState, RootState> = {
     }
   },
   getters: {
-    coaches(state) {
+    coaches(state): Coach[] {
       return state.coaches;
     },
-    hasCoaches(state) {
+    hasCoaches(state): boolean {
       // Checks if the value of the state coaches is truthy then checks whether it has coaches
       return state.coaches && state.coaches.length > 0;
     },
-    findCoach(state) {
-      return function (id: string) {
+    findCoach(state): Function {
+      return function (id: string): Coach | undefined {
         return state.coaches.find((coach: Coach) => coach.id === id);
       };
     },
-    isCoach(_, getters, _2, rootGetters) {
+    isCoach(_, getters, _2, rootGetters): boolean {
       const userId = rootGetters.userId;
       return getters.coaches.some((coach: Coach) => coach.id === userId);
     },
-    shouldUpdate(state) {
+    shouldUpdate(state): boolean {
       if (state.lastFetchTimestamp === null) {
         return true;
       }

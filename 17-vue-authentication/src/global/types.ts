@@ -1,7 +1,7 @@
 interface RootState {}
 
 interface CoachesState {
-  coaches: Array<Coach>;
+  coaches: Coach[];
   lastFetchTimestamp: number | null;
 }
 
@@ -11,11 +11,11 @@ interface Coach {
   lastName: string;
   description: string;
   hourlyRate: number;
-  areas: Array<string>;
+  areas: string[];
 }
 
 interface RequestsState {
-  requests: Array<Request>;
+  requests: Request[];
 }
 
 interface Request {
