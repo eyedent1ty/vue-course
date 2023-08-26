@@ -1,4 +1,4 @@
-import { ActionContext, Module } from 'vuex';
+import type { ActionContext, Module } from 'vuex';
 
 import {
   AuthenticationCredentials,
@@ -23,70 +23,63 @@ const authModule: Module<AuthenticationState, RootState> = {
   },
   actions: {
     async login(
-      context,
+      context: ActionContext<AuthenticationState, RootState>,
       credentials: AuthenticationCredentials
     ): Promise<void> {
-      const response = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-            returnSecureToken: true
-          })
-        }
-      );
-
-      const responseData = await response.json();
-
-      if (!response.ok) {
-        const error = new Error(
-          responseData.message || 'Failed to authenticate'
-        );
-        throw error;
-      }
-
-      context.commit('setUser', {
-        token: responseData.idToken,
-        userId: responseData.localId,
-        tokenExpiration: responseData.expiresIn
+      context.dispatch('auth', {
+        ...credentials,
+        mode: 'login'
       });
     },
 
     async signup(
-      context,
+      context: ActionContext<AuthenticationState, RootState>,
       credentials: AuthenticationCredentials
     ): Promise<void> {
-      const response = await fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-            returnSecureToken: true
-          })
-        }
-      );
+      context.dispatch('auth', {
+        ...credentials,
+        mode: 'signup'
+      });
+    },
+
+    async auth(
+      context: ActionContext<AuthenticationState, RootState>,
+      payload: { email: string; password: string; mode: string }
+    ): Promise<void> {
+      const mode = payload.mode;
+      let url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg';
+
+      if (mode === 'signup') {
+        url =
+          'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBNSJUvssaJF2eIFUKZBwOqEiS6k4zdkSg';
+      }
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: payload.email,
+          password: payload.password,
+          returnSecureToken: true
+        })
+      });
 
       const responseData = await response.json();
 
       if (!response.ok) {
-        console.log(response);
         const error = new Error(
           responseData.message || 'Failed to authenticate'
         );
         throw error;
       }
 
-      context.commit('setUser', {
+      localStorage.setItem('token', responseData.idToken);
+      localStorage.setItem('userId', responseData.localId);
+
+      return context.commit('setUser', {
         token: responseData.idToken,
         userId: responseData.localId,
         tokenExpiration: responseData.expiresIn
@@ -99,6 +92,21 @@ const authModule: Module<AuthenticationState, RootState> = {
         userId: null,
         tokenExpiration: null
       });
+
+      localStorage.clear();
+    },
+
+    tryLogin(context: ActionContext<AuthenticationState, RootState>) {
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
+
+      if (token && userId) {
+        context.commit('setUser', {
+          token,
+          userId,
+          tokenExpiration: null
+        });
+      }
     }
   },
   getters: {
