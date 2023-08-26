@@ -81,8 +81,7 @@ const authModule: Module<AuthenticationState, RootState> = {
       }
 
       // Converting seconds to milliseconds
-      // const expiresIn = Number(responseData.expiresIn) * 1000;
-      const expiresIn = 5000;
+      const expiresIn = Number(responseData.expiresIn) * 1000;
       const tokenExpiration = new Date().getTime() + expiresIn;
 
       timer = setTimeout(() => {
