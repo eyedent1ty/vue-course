@@ -93,6 +93,10 @@ export default {
             password: this.password
           });
         }
+
+        const redirectUrl = `/${this.$route.query.redirect || 'coaches'}`;
+
+        this.$router.replace(redirectUrl);
       } catch (error) {
         this.error = error.message || 'Something went wrong.';
         this.isLoading = false;
@@ -100,7 +104,7 @@ export default {
       }
 
       this.isLoading = false;
-      this.$router.replace('/coaches');
+
     },
     switchAuthMode() {
       if (this.mode === 'login') {
