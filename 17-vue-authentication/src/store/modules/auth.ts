@@ -6,19 +6,23 @@ import {
   RootState
 } from '@/global/types';
 
+let timer: number;
+
 const authModule: Module<AuthenticationState, RootState> = {
   state() {
     return {
       userId: null,
       token: null,
-      tokenExpiration: null
+      didAutoLogout: false
     };
   },
   mutations: {
     setUser(state, user: AuthenticationState): void {
       state.token = user.token;
       state.userId = user.userId;
-      state.tokenExpiration = user.tokenExpiration;
+    },
+    setAutoLogout(state): void {
+      state.didAutoLogout = true;
     }
   },
   actions: {
@@ -76,37 +80,62 @@ const authModule: Module<AuthenticationState, RootState> = {
         throw error;
       }
 
+      // Converting seconds to milliseconds
+      // const expiresIn = Number(responseData.expiresIn) * 1000;
+      const expiresIn = 5000;
+      const tokenExpiration = new Date().getTime() + expiresIn;
+
+      timer = setTimeout(() => {
+        context.dispatch('autoLogout');
+      }, expiresIn);
+
       localStorage.setItem('token', responseData.idToken);
       localStorage.setItem('userId', responseData.localId);
+      localStorage.setItem('tokenExpiration', String(tokenExpiration));
 
       return context.commit('setUser', {
         token: responseData.idToken,
-        userId: responseData.localId,
-        tokenExpiration: responseData.expiresIn
+        userId: responseData.localId
       });
-    },
-
-    logout(context: ActionContext<AuthenticationState, RootState>): void {
-      context.commit('setUser', {
-        token: null,
-        userId: null,
-        tokenExpiration: null
-      });
-
-      localStorage.clear();
     },
 
     tryLogin(context: ActionContext<AuthenticationState, RootState>) {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
+      const tokenExpiration = Number(localStorage.getItem('tokenExpiration'));
+
+      const currentTime = new Date().getTime();
+      const expirationTime = tokenExpiration - currentTime;
+
+      if (expirationTime > 0) {
+        timer = setTimeout(() => {
+          context.dispatch('autoLogout');
+        }, expirationTime);
+      }
 
       if (token && userId) {
         context.commit('setUser', {
           token,
-          userId,
-          tokenExpiration: null
+          userId
         });
       }
+    },
+
+    logout(context: ActionContext<AuthenticationState, RootState>): void {
+      context.commit('setUser', {
+        token: null,
+        userId: null
+      });
+
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('tokenExpiration');
+    },
+
+    autoLogout(context: ActionContext<AuthenticationState, RootState>): void {
+      context.dispatch('logout');
+      clearTimeout(timer);
+      context.commit('setAutoLogout');
     }
   },
   getters: {
@@ -118,6 +147,9 @@ const authModule: Module<AuthenticationState, RootState> = {
     },
     isAuthenticated(state): boolean {
       return !!state.token;
+    },
+    didAutoLogout(state): boolean {
+      return state.didAutoLogout;
     }
   }
 };

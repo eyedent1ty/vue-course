@@ -28,7 +28,7 @@ interface Request {
 interface AuthenticationState {
   userId: string | null;
   token: string | null;
-  tokenExpiration: string | null;
+  didAutoLogout: boolean;
 }
 
 interface AuthenticationCredentials {
