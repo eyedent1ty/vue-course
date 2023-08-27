@@ -6,24 +6,27 @@
 </template>
 
 <script lang="ts">
-import { reactive } from 'vue';
+import { reactive, toRefs } from 'vue';
 
 export default {
   setup() {
+    const user = toRefs(
+      reactive({
+        name: 'John Daniel',
+        age: 21
+      })
+    );
 
-    const user = reactive({
-      name: 'John Daniel',
-      age: 21
-    });
+    const { name, age } = user;
 
     setTimeout(() => {
-      user.name = 'Daniel';
-      user.age = 22;
+      name.value = 'Daniel';
+      age.value = 22;
     }, 2000);
 
     return {
-      name: user.name,
-      age: user.age
+      name,
+      age
     };
   }
 };
