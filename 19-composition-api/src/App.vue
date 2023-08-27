@@ -4,13 +4,18 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import { ref } from 'vue';
+import type { Ref } from 'vue';
+
 export default {
-  data() {
+  setup() {
+    const userName: Ref<string> = ref('John Daniel');
+
     return {
-      userName: 'Maximilian',
+      userName
     };
-  },
+  }
 };
 </script>
 
