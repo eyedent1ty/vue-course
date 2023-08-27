@@ -6,13 +6,15 @@
     <h1>Full name: {{ fullName }}</h1>
     <div>
       <input type="text" placeholder="First Name" v-model="firstName" />
-      <input type="text" placeholder="Last Name" v-model="lastName" />
+      <input type="text" placeholder="Last Name" ref="lastNameInput" />
+      <button @click="setLastName">Set Last Name </button>
     </div>
   </section>
 </template>
 
 <script lang="ts">
 import { reactive, ref, computed, watch } from 'vue';
+import type { Ref } from 'vue';
 
 export default {
   setup() {
@@ -23,6 +25,7 @@ export default {
 
     const firstName = ref('');
     const lastName = ref('');
+    const lastNameInput: Ref<HTMLInputElement | null> = ref(null);
 
     watch([firstName, lastName], (value, oldValue) => {
       console.log('Value', value);
@@ -37,12 +40,22 @@ export default {
       return firstName.value + ' ' + lastName.value;
     });
 
+    function setLastName() {
+      if (lastNameInput.value) {
+        lastName.value = lastNameInput.value.value;
+      } else {
+        lastName.value = '';
+      }
+    }
+
     return {
       user,
       setNewAge,
       firstName,
       lastName,
-      fullName
+      fullName,
+      setLastName,
+      lastNameInput
     };
   }
 };
