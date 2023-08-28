@@ -1,27 +1,38 @@
 <template>
   <section class="container">
-    <h2>{{ user.name }}</h2>
-    <h3>{{ user.age }}</h3>
+    <user-data
+      :first-name="firstName"
+      :last-name="lastName"
+      :age="age"
+      @myEvent="logEvent"
+    ></user-data>
     <button v-on:click="setNewAge">Change age</button>
     <h1>Full name: {{ fullName }}</h1>
     <div>
       <input type="text" placeholder="First Name" v-model="firstName" />
       <input type="text" placeholder="Last Name" ref="lastNameInput" />
-      <button @click="setLastName">Set Last Name </button>
+      <button @click="setLastName">Set Last Name</button>
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { reactive, ref, computed, watch } from 'vue';
+import { reactive, ref, computed, watch, toRefs, isRef } from 'vue';
 import type { Ref } from 'vue';
 
+import UserData from './components/UserData.vue';
+
 export default {
+  components: {
+    UserData
+  },
   setup() {
     const user = reactive({
       name: 'John Daniel',
       age: 21
     });
+
+    const userRefs = toRefs(user);
 
     const firstName = ref('');
     const lastName = ref('');
@@ -48,14 +59,20 @@ export default {
       }
     }
 
+    function logEvent(event: string) {
+      console.log(event);
+    }
+
     return {
       user,
       setNewAge,
       firstName,
       lastName,
+      age: userRefs.age,
       fullName,
       setLastName,
-      lastNameInput
+      lastNameInput,
+      logEvent
     };
   }
 };
