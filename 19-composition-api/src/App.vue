@@ -3,7 +3,6 @@
     <user-data
       :first-name="firstName"
       :last-name="lastName"
-      :age="age"
       @myEvent="logEvent"
     ></user-data>
     <button v-on:click="setNewAge">Change age</button>
@@ -17,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref, computed, watch, toRefs, isRef } from 'vue';
+import { reactive, ref, computed, watch, toRefs, provide } from 'vue';
 import type { Ref } from 'vue';
 
 import UserData from './components/UserData.vue';
@@ -62,6 +61,15 @@ export default {
     function logEvent(event: string) {
       console.log(event);
     }
+
+    // Providing the ref object to descendants component
+    // You must provide a Ref instance instead of the value itself if you want your provided data to be reactive
+    // provide('age', userRefs.age.value);
+    provide('age', userRefs.age);
+
+    watch(userRefs.age, (value) => {
+      console.log(value);
+    });
 
     return {
       user,

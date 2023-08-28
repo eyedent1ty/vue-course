@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import { computed, ref, defineEmits } from 'vue';
+import { computed, ref, inject } from 'vue';
 
 export default {
-  props: ['firstName', 'lastName', 'age'],
+  props: ['firstName', 'lastName'],
   setup(props: any, context: any) {
     const userName = computed(() => {
       return props.firstName + ' ' + props.lastName;
@@ -20,9 +20,14 @@ export default {
       context.emit('myEvent', myData.value);
     }
 
+    const age = inject('age');
+
+    console.log(age);
+
     return {
       userName,
-      emitEvent
+      emitEvent,
+      age
     };
   }
 };
