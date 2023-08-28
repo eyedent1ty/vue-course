@@ -1,10 +1,12 @@
 <template>
   <section class="container">
     <user-data
+      v-if="showUserData"
       :first-name="firstName"
       :last-name="lastName"
       @myEvent="logEvent"
     ></user-data>
+    <button @click="hideUserData">Hide User Data</button>
     <button v-on:click="setNewAge">Change age</button>
     <h1>Full name: {{ fullName }}</h1>
     <div>
@@ -36,6 +38,7 @@ export default {
     const firstName = ref('');
     const lastName = ref('');
     const lastNameInput: Ref<HTMLInputElement | null> = ref(null);
+    const showUserData = ref(true);
 
     watch([firstName, lastName], (value, oldValue) => {
       console.log('Value', value);
@@ -71,6 +74,10 @@ export default {
       console.log(value);
     });
 
+    function hideUserData() {
+      showUserData.value = false;
+    }
+
     return {
       user,
       setNewAge,
@@ -80,7 +87,9 @@ export default {
       fullName,
       setLastName,
       lastNameInput,
-      logEvent
+      logEvent,
+      hideUserData,
+      showUserData
     };
   }
 };
