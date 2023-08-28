@@ -23,7 +23,7 @@ export default {
     const activeUsers = reactive(USER_DATA);
 
     const selectUser = (uid) => {
-      selectedUser.value = activeUsers.value.find((usr) => usr.id === uid);
+      selectedUser.value = activeUsers.find((usr) => usr.id === uid);
     };
 
     watch(activeUsers, (value) => {
