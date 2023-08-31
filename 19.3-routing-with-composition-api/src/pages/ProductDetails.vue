@@ -3,42 +3,32 @@
     <h2>{{ title }}</h2>
     <h3>${{ price }}</h3>
     <p>{{ description }}</p>
-    <router-link to="/products/p2">Go to Product 2</router-link>
+    <router-link to="/products/p2">Go to product 2</router-link>
   </section>
 </template>
 
-<script>
+<script setup>
 import { inject, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-export default {
-  props: ['pid'],
-  setup(props) {
-    const products = inject('products');
+const route = useRoute();
+const products = inject('products');
 
-    // let selectedProduct = products.value.find((product) => product.id === props.pid);
+const selectedProduct = computed(() => {
+  return products.value.find((product) => product.id === route.params.pid);
+});
 
-    // const title = ref(selectedProduct.title);
-    // const description = ref(selectedProduct.description);
-    // const price = ref(selectedProduct.price);
+const title = computed(() => {
+  return selectedProduct.value.title;
+});
 
-    // watch(props, () => {
-    //   selectedProduct = products.value.find((product) => product.id === props.pid);
-    //   title.value = selectedProduct.title;
-    //   description.value = selectedProduct.description;
-    //   price.value = selectedProduct.price;
-    // });
+const description = computed(() => {
+  return selectedProduct.value.description;
+});
 
-    const selectedProduct = computed(() => {
-      return products.value.find((product) => product.id === props.pid);
-    });
-
-    const title = computed(() => selectedProduct.value.title);
-    const description = computed(() => selectedProduct.value.description);
-    const price = computed(() => selectedProduct.value.price);
-
-    return { title, description, price };
-  }
-};
+const price = computed(() => {
+  return selectedProduct.value.price;
+});
 </script>
 
 <style scoped>
