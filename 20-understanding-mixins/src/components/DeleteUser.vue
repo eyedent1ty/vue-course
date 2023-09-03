@@ -20,12 +20,8 @@ import alertMixins from '../mixins/alert.js';
 export default {
   data() {
     return {
-      userAlertTitle: 'Delete User?',
-      alertIsVisible: true
+      userAlertTitle: 'Delete User?'
     };
-  },
-  mounted() {
-    console.log(this.alertIsVisible);
   },
   mixins: [alertMixins]
 };
