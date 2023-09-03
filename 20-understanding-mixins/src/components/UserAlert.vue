@@ -1,16 +1,18 @@
 <template>
-  <div class="backdrop" @click="closeDialog"></div>
-  <dialog open>
-    <header>
-      <h2>{{ title }}</h2>
-    </header>
-    <div>
-      <slot></slot>
-    </div>
-    <menu>
-      <button @click="closeDialog">Close</button>
-    </menu>
-  </dialog>
+  <div>
+    <div class="backdrop" @click="closeDialog"></div>
+    <dialog open>
+      <header>
+        <h2>{{ title }}</h2>
+      </header>
+      <div>
+        <slot></slot>
+      </div>
+      <menu>
+        <button @click="closeDialog">Close</button>
+      </menu>
+    </dialog>
+  </div>
 </template>
 
 <script>
@@ -20,8 +22,8 @@ export default {
   methods: {
     closeDialog() {
       this.$emit('close');
-    },
-  },
+    }
+  }
 };
 </script>
 
