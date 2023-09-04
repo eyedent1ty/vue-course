@@ -2,7 +2,7 @@
   <transition name="user-alert">
     <user-alert
       v-if="alertIsVisible"
-      :title="userAlertTitle"
+      title="Delete the User?"
       @close="hideAlert"
     >
       <p>Do you want to continue with deleting a user?</p>
@@ -50,7 +50,7 @@ export default {
   }
 
   to {
-    opaacity: 1
+    opacity: 1
   }
 }
 </style>

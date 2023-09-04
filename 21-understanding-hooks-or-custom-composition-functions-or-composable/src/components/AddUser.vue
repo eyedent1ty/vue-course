@@ -46,7 +46,7 @@ export default {
   }
 
   to {
-    opaacity: 1;
+    opacity: 1;
   }
 }
 </style>
