@@ -44,8 +44,6 @@ export default {
       'title'
     );
 
-    console.log(availableItems.value);
-
     const hasProjects = computed(function () {
       return props.user.projects && availableItems.value.length > 0;
     });
@@ -54,7 +52,7 @@ export default {
     // const user = propsWithRefs.user;
 
     watch(user, function () {
-      enteredSearchTerm.value = '';
+      updateSearch('');
     });
 
     return {

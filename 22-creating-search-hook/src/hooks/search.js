@@ -4,15 +4,13 @@ export default function useSearch(items, searchProp) {
   const enteredSearchTerm = ref('');
   const activeSearchTerm = ref('');
 
-
-  console.log('Search hook is executed');
   const availableItems = computed(function () {
     if (activeSearchTerm.value) {
       return items.value.filter((item) =>
         item[searchProp].includes(activeSearchTerm.value)
       );
     }
-    return items.value;
+    return items.value ;
   });
 
   watch(enteredSearchTerm, function (newValue) {
