@@ -24,7 +24,8 @@ export default {
     UserAlert
   },
   setup() {
-    const [alertIsVisible, showAlert, hideAlert] = useAlert();
+    // Hooks are just regular function, you can pass parameters to define data to be used in the hook
+    const [alertIsVisible, showAlert, hideAlert] = useAlert(true);
 
     return {
       alertIsVisible,
