@@ -19,13 +19,13 @@ export default function useSort(items, sortProp) {
     });
   });
 
-  function setSortMode(mode) {
+  function sort(mode) {
     sorting.value = mode;
   }
 
   return {
     sorting,
     displayedItems,
-    setSortMode
+    sort
   };
 }

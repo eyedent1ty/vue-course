@@ -50,12 +50,8 @@ export default {
     const {
       sorting,
       displayedItems,
-      setSortMode
+      sort
     } = useSort(availableItems, 'fullName');
-
-    function sort(mode) {
-      setSortMode(mode);
-    }
 
     return {
       enteredSearchTerm,
