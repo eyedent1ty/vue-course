@@ -35,24 +35,38 @@ export default {
     UserItem
   },
   props: ['users'],
+  emits: ['list-projects'],
   setup(props) {
     const enteredSearchTerm = ref('');
     const activeSearchTerm = ref('');
-    const sorting = ref(null);
 
-    const availableUsers = computed(() => {
-      let currentUsers = [];
+    const availableUsers = computed(function () {
+      let users = [];
       if (activeSearchTerm.value) {
-        currentUsers = props.users.filter((usr) =>
+        users = props.users.filter((usr) =>
           usr.fullName.includes(activeSearchTerm.value)
         );
       } else if (props.users) {
-        currentUsers = props.users;
+        users = props.users;
       }
-      return currentUsers;
+      return users;
     });
 
-    const displayedUsers = computed(() => {
+    function updateSearch(val) {
+      enteredSearchTerm.value = val;
+    }
+
+    watch(enteredSearchTerm, (val) => {
+      setTimeout(() => {
+        if (val === enteredSearchTerm.value) {
+          activeSearchTerm.value = val;
+        }
+      }, 300);
+    });
+
+
+    const sorting = ref(null);
+    const displayedUsers = computed(function () {
       if (!sorting.value) {
         return availableUsers.value;
       }
@@ -69,21 +83,9 @@ export default {
       });
     });
 
-    const updateSearch = (val) => {
-      enteredSearchTerm.value = val;
-    };
-
-    const sort = (mode) => {
+    function sort(mode) {
       sorting.value = mode;
-    };
-
-    watch(enteredSearchTerm, (val) => {
-      setTimeout(() => {
-        if (val === enteredSearchTerm.value) {
-          activeSearchTerm.value = val;
-        }
-      }, 300);
-    });
+    }
 
     return {
       enteredSearchTerm,

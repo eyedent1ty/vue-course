@@ -9,7 +9,6 @@ import { useStore } from 'vuex';
 export default {
   setup() {
     const store = useStore();
-    console.log(store)
 
     const counter = computed(() => store.getters.counter);
 

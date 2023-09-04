@@ -18,6 +18,8 @@ export default {
   emits: ['update:modelValue'],
   data() {
     return {
+      // modelValue prop is used as the initialValue of the activeOption data propetry
+      // NOTE: Data properties are not reactive when the props changes
       activeOption: this.modelValue
     };
   },

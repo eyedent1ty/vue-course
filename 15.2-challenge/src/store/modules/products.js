@@ -1,6 +1,6 @@
-import productsGetters from './getters.js';
+export default {
+  namespaced: true,
 
-const productsModule = {
   state() {
     return {
       products: [
@@ -33,7 +33,17 @@ const productsModule = {
       ]
     };
   },
-  getters: productsGetters
-};
 
-export default productsModule;
+  getters: {
+    products(state, getters) {
+      console.log(getters);
+      return state.products;
+    },
+
+    findProduct(state) {
+      return (productId) => {
+        return state.products.find((product) => product.id === productId);
+      };
+    }
+  }
+};

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { reactive, ref, watch } from 'vue';
+import { ref } from 'vue';
 
 import USER_DATA from './dummy-data.js';
 
@@ -20,15 +20,11 @@ export default {
   },
   setup() {
     const selectedUser = ref(null);
-    const activeUsers = reactive(USER_DATA);
+    const activeUsers = USER_DATA;
 
-    const selectUser = (uid) => {
+    function selectUser(uid) {
       selectedUser.value = activeUsers.find((usr) => usr.id === uid);
-    };
-
-    watch(activeUsers, (value) => {
-      console.log(value);
-    });
+    }
 
     return {
       selectedUser,

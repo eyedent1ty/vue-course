@@ -8,26 +8,37 @@
 </template>
 
 <script setup>
-import { inject, computed } from 'vue';
+import { inject, watchEffect, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const products = inject('products');
 
-const selectedProduct = computed(() => {
-  return products.value.find((product) => product.id === route.params.pid);
-});
+// const selectedProduct = computed(() => {
+//   return products.value.find((product) => product.id === route.params.pid);
+// });
 
-const title = computed(() => {
-  return selectedProduct.value.title;
-});
+// const title = computed(() => {
+//   return selectedProduct.value.title;
+// });
 
-const description = computed(() => {
-  return selectedProduct.value.description;
-});
+// const description = computed(() => {
+//   return selectedProduct.value.description;
+// });
 
-const price = computed(() => {
-  return selectedProduct.value.price;
+// const price = computed(() => {
+//   return selectedProduct.value.price;
+// });
+
+const selectedProduct = ref(null);
+const title = ref(null);
+const description = ref(null);
+const price = ref(null);
+watchEffect(() => {
+  selectedProduct.value = products.value.find((product) => product.id === route.params.pid);
+  title.value = selectedProduct.value.title;
+  description.value = selectedProduct.value.description;
+  price.value = selectedProduct.value.price;
 });
 </script>
 
